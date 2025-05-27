@@ -1,6 +1,6 @@
 # CREAZIONE CONTAINER POSTGRES
 
-write-output "###### AVVIO CONTAINER POSTGRESQL PER DB WSO2ETE ######"
+write-output "###### AVVIO CONTAINER POSTGRESQL PER DBs WSO2 ######"
 
 $networks = docker network ls --format  "{{.Name}}" 2>$null
 
@@ -28,6 +28,11 @@ docker run -d `
     -p 5432:5432 `
     -v vol_wso2_postgresql:/var/lib/postgresql/data `
     -v .\01-init-schemas.sql:/docker-entrypoint-initdb.d/01-init-schemas.sql `
+    -v .\02-db-apim-shared.sql:/docker-entrypoint-initdb.d/02-db-apim-shared.sql `
+    -v .\03-db-apim.sql:/docker-entrypoint-initdb.d/03-db-apim.sql `
     postgres:latest
 
+write-output "###### AVVIO CONTAINER TERMINATO ######"
+write-output "-> AVVIO Logs"
 
+docker logs -f postgres-wso2
