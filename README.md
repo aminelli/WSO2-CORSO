@@ -32,3 +32,14 @@
 docker volume create portainer_data
 docker run -d -p 8001:8000 -p 9943:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:lts
 ```
+
+
+### Note:
+
+#### Privilegi powershell
+
+Per risolvere il problema di powershell relativo all'abilitazione dell'esecuzione di script, lanciare un powershell con diritti amministrativi ed eseguire il comando:
+
+```powershell
+Set-ExecutionPolicy RemoteSigned -Scope LocalMachine
+```
