@@ -7,7 +7,7 @@ docker run -d \
     --hostname postgres-wso2 \
     -e POSTGRES_USER=root \
     -e POSTGRES_PASSWORD=root \
-    --network $networkName \
+    --network net-wso2 \
     -p 5432:5432 \
     -v vol_wso2_postgresql:/var/lib/postgresql/data \
     -v .\01-init-schemas.sql:/docker-entrypoint-initdb.d/01-init-schemas.sql \

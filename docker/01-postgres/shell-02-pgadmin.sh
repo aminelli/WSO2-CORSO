@@ -7,7 +7,7 @@ docker run -d \
     --hostname pgadmin-wso2 \
     -e PGADMIN_DEFAULT_EMAIL=admin@wso2.com \
     -e PGADMIN_DEFAULT_PASSWORD=admin \
-    --network $networkName \
+    --network net-wso2 \
     -p 5050:80 \
     -v vol_wso2_pgadmin:/var/lib/pgadmin \
     dpage/pgadmin4:latest
