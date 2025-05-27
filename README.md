@@ -23,4 +23,12 @@
 | Desc       | Url                     |
 | ---------- | ----------------------- |
 | Docker Hub | https://hub.docker.com/ |
+| Portainer | https://docs.portainer.io/start/install-ce?hsCtaAttrib=127816908696 |
 
+
+### Installazione portainer
+
+```bash
+docker volume create portainer_data
+docker run -d -p 8001:8000 -p 9943:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:lts
+```
