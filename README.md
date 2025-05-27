@@ -13,17 +13,22 @@
 
 ## Downloads
 
-| Desc  | ver    | Url                                                      |
-| ----- | ------ | -------------------------------------------------------- |
-| API-M | v4.5.0 | https://github.com/wso2/product-apim/releases/tag/v4.5.0 |
+| Desc         | ver      | Url                                                       |
+| ------------ | -------- | --------------------------------------------------------- |
+| API-M        | v4.5.0   | https://github.com/wso2/product-apim/releases/tag/v4.5.0  |
+| Docker API-M |          | https://github.com/wso2/docker-apim                       |
+| Docker API-M | v4.5.0.1 | https://github.com/wso2/docker-apim/releases/tag/v4.5.0.1 |
 
 
 ## Link Utili
 
-| Desc       | Url                     |
-| ---------- | ----------------------- |
-| Docker Hub | https://hub.docker.com/ |
-| Portainer | https://docs.portainer.io/start/install-ce?hsCtaAttrib=127816908696 |
+| Desc                         | Url                                                                 |
+| ---------------------------- | ------------------------------------------------------------------- |
+| Docker Hub                   | https://hub.docker.com/                                             |
+| Portainer                    | https://docs.portainer.io/start/install-ce?hsCtaAttrib=127816908696 |
+| Container Registry uff. wso2 | https://docker.wso2.com/                                            |
+
+
 
 
 ### Installazione portainer
