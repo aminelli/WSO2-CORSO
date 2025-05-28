@@ -1,6 +1,13 @@
 # WSO2-CORSO
 
+## Dashboards
 
+| Dashboard               | SRV             | URL                                   |
+| ----------------------- | --------------- | ------------------------------------- |
+| Publisher               | API Manager     | https://localhost:9443/publisher/apis |
+| Dev Portal              | API Manager     | https://localhost:9443/devportal      |
+| Admin Portal            | API Manager     | https://localhost:9443/admin          |
+| API Manager (OLD)       | API Manager     | https://localhost:9443/carbon         |
 
 
 ## GitHub
