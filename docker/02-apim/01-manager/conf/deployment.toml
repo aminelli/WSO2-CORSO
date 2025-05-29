@@ -109,6 +109,9 @@ gateway_labels =["Default"]
 enable = false
 auth_token = ""
 
+[analytics]
+enable = false
+
 [apim.ai]
 enable = true
 key = ""
@@ -129,6 +132,15 @@ enable_lightweight_apikey_generation = true
 #authorize_endpoint = "https://localhost:${mgt.transport.https.port}/oauth2/authorize"
 #oidc_logout_endpoint = "https://localhost:${mgt.transport.https.port}/oidc/logout"
 #oidc_check_session_endpoint = "https://localhost:${mgt.transport.https.port}/oidc/checksession"
+
+# [[APIM.JWT.ISSUER]]
+# name = "https://localhost:9443/oauth2/token"
+# url = "https://localhost:9443/oauth2/jwks"
+# 
+# [[APIM.JWT.ISSUER]]
+# name = "test"
+# url = "https://localhost:9455/oauth2/jwks"
+
 
 #[apim.jwt]
 #enable = true

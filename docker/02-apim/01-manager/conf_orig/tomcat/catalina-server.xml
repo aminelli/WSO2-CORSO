@@ -34,7 +34,7 @@
                    noCompressionUserAgents="gozilla, traviata"
                    acceptCount="200"
                    bindOnInit="false"
-                   maxHttpHeaderSize="8192"
+                   maxHttpHeaderSize="65536"
                    acceptorThreadCount="2"
                    compressionMinSize="2048"
                    compressibleMimeType="text/html,text/javascript,application/x-javascript,application/javascript,application/xml,text/css,application/xslt+xml,text/xsl,image/gif,image/jpg,image/jpeg"
