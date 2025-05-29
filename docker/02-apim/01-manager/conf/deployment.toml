@@ -290,3 +290,7 @@ iat_validity_period = "1h"
 #service_url = "https://localhost:8080/transactions/records"
 #service_username = "admin"
 #service_password = "admin"
+
+[oauth.token_cleanup]
+enable = true
+retain_access_tokens_for_auditing = false
