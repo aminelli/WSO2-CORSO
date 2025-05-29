@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------------
 #
-# Copyright 2023 WSO2, LLC. (http://wso2.com)
+# Copyright 2024-2025 WSO2, LLC. (http://wso2.com)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,73 +16,68 @@
 #
 # ------------------------------------------------------------------------
 
-# set base Docker image to Ubuntu
+# Set base Docker image to Ubuntu 24.04 Docker image.
 FROM ubuntu:24.04
 
+LABEL maintainer="WSO2 Docker Maintainers <dev@wso2.org>" \
+      com.wso2.docker.source="https://github.com/wso2/docker-is/releases/tag/v7.1.0.1"
+
+# Install JDK Dependencies.
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
-# install dependencies
 RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata curl ca-certificates fontconfig locales python-is-python3 libxml2-utils netcat-traditional unzip wget \
+    && apt-get install -y --no-install-recommends tzdata curl ca-certificates fontconfig locales \
     && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
     && locale-gen en_US.UTF-8 \
     && rm -rf /var/lib/apt/lists/*
 
-ENV JAVA_VERSION=jdk-21.0.5+11
-ENV JAVA_HOME=/opt/java/openjdk \
-    PATH="/opt/java/openjdk/bin:$PATH"
+ENV JAVA_VERSION jdk-21.0.6+7
 
-# install Temurin OpenJDK 21
+# Install Temurin OpenJDK 21.
 RUN set -eux; \
     ARCH="$(dpkg --print-architecture)"; \
     case "${ARCH}" in \
-       amd64) \
-         ESUM='3c654d98404c073b8a7e66bffb27f4ae3e7ede47d13284c132d40a83144bfd8c'; \
-         BINARY_URL='https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jdk_x64_linux_hotspot_21.0.5_11.tar.gz'; \
-         ;; \
-       arm64) \
-         ESUM='6482639ed9fd22aa2e704cc366848b1b3e1586d2bf1213869c43e80bca58fe5c'; \
-         BINARY_URL='https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jdk_aarch64_linux_hotspot_21.0.5_11.tar.gz'; \
-         ;; \
-       ppc64el) \
-         ESUM='3c6f4c358facfb6c19d90faf02bfe0fc7512d6b0e80ac18146bbd7e0d01deeef'; \
-         BINARY_URL='https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jdk_ppc64le_linux_hotspot_21.0.5_11.tar.gz'; \
-         ;; \
-       s390x) \
-         ESUM='51a7ca42cc2e8cb5f3e7a326c28912ee84ff0791a1ca66650a8c53af07510a7c'; \
-         BINARY_URL='https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jdk_s390x_linux_hotspot_21.0.5_11.tar.gz'; \
-         ;; \
+        amd64|x86_64) \
+            ESUM='a2650fba422283fbed20d936ce5d2a52906a5414ec17b2f7676dddb87201dbae'; \
+            BINARY_URL='https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jdk_x64_linux_hotspot_21.0.6_7.tar.gz'; \
+            ;; \
+        aarch64|arm64) \
+            ESUM='04fe1273f624187d927f1b466e8cdb630d70786db07bee7599bfa5153060afd3'; \
+            BINARY_URL='https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jdk_aarch64_linux_hotspot_21.0.6_7.tar.gz'; \
+            ;; \
        *) \
-         echo "Unsupported arch: ${ARCH}"; \
-         exit 1; \
-         ;; \
+            echo "Unsupported arch: ${ARCH}"; \
+            exit 1; \
+            ;; \
     esac; \
     curl -LfsSo /tmp/openjdk.tar.gz ${BINARY_URL}; \
     echo "${ESUM} */tmp/openjdk.tar.gz" | sha256sum -c -; \
     mkdir -p /opt/java/openjdk; \
     cd /opt/java/openjdk; \
     tar -xf /tmp/openjdk.tar.gz --strip-components=1; \
-    rm -rf /tmp/openjdk.tar.gz; \
-    java -Xshare:dump;
+    rm -rf /tmp/openjdk.tar.gz;
 
-LABEL maintainer="WSO2 Docker Maintainers <dev@wso2.org>" \
-      com.wso2.docker.source="https://github.com/wso2/docker-apim/releases/tag/v4.5.0.1"
+ENV JAVA_HOME=/opt/java/openjdk \
+    PATH="/opt/java/openjdk/bin:$PATH"
 
-# set Docker image build arguments
-# build arguments for user/group configurations
+# Set Docker image build arguments.
+# Build arguments for user/group configurations.
 ARG USER=wso2carbon
-ARG USER_ID=10001
+ARG USER_ID=802
 ARG USER_GROUP=wso2
-ARG USER_GROUP_ID=10001
+ARG USER_GROUP_ID=802
 ARG USER_HOME=/home/${USER}
-# build arguments for WSO2 product installation
-ARG WSO2_SERVER_NAME=wso2am
-ARG WSO2_SERVER_VERSION=4.5.0
-ARG WSO2_SERVER_REPOSITORY=product-apim
+# Build arguments for WSO2 product installation.
+ARG WSO2_SERVER_NAME=wso2is
+ARG WSO2_SERVER_VERSION=7.1.0
+ARG WSO2_SERVER_REPOSITORY=product-is
 ARG WSO2_SERVER=${WSO2_SERVER_NAME}-${WSO2_SERVER_VERSION}
 ARG WSO2_SERVER_HOME=${USER_HOME}/${WSO2_SERVER}
+# Hosted wso2is-7.0.0 distribution URL.
 ARG WSO2_SERVER_DIST_URL=https://github.com/wso2/${WSO2_SERVER_REPOSITORY}/releases/download/v${WSO2_SERVER_VERSION}/${WSO2_SERVER}.zip
-# build argument for MOTD
+# Build arguments for external artifacts.
+ARG DNS_JAVA_VERSION=3.6.1
+# Build argument for MOTD.
 ARG MOTD="\n\
 Welcome to WSO2 Docker resources.\n\
 ------------------------------------ \n\
@@ -90,45 +85,56 @@ This Docker container comprises of a WSO2 product, running with its latest GA re
 which is under the Apache License, Version 2.0. \n\
 Read more about Apache License, Version 2.0 here @ http://www.apache.org/licenses/LICENSE-2.0.\n"
 
-# create the non-root user and group and set MOTD login message
+# Create the non-root user and group and set MOTD login message.
 RUN \
     groupadd --system -g ${USER_GROUP_ID} ${USER_GROUP} \
     && useradd --system --create-home --home-dir ${USER_HOME} --no-log-init -g ${USER_GROUP_ID} -u ${USER_ID} ${USER} \
     && echo '[ ! -z "${TERM}" -a -r /etc/motd ] && cat /etc/motd' >> /etc/bash.bashrc; echo "${MOTD}" > /etc/motd
 
-# copy init script to user home
-COPY --chown=wso2carbon:wso2 docker-entrypoint.sh ${USER_HOME}/
-# install required packages
+# Create Java prefs dir.
+# This is to avoid warning logs printed by FileSystemPreferences class.
+RUN \
+    mkdir -p ${USER_HOME}/.java/.systemPrefs \
+    && mkdir -p ${USER_HOME}/.java/.userPrefs \
+    && chmod -R 755 ${USER_HOME}/.java \
+    && chown -R ${USER}:${USER_GROUP} ${USER_HOME}/.java
 
-# add the WSO2 product distribution to user's home directory
+# Copy init script to user home.
+COPY --chown=wso2carbon:wso2 docker-entrypoint.sh ${USER_HOME}/
+
+# Install required packages.
+RUN \
+    apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        netcat-openbsd \
+        unzip \
+        wget \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN \
     wget -O ${WSO2_SERVER}.zip "${WSO2_SERVER_DIST_URL}" \
     && unzip -d ${USER_HOME} ${WSO2_SERVER}.zip \
     && chown wso2carbon:wso2 -R ${WSO2_SERVER_HOME} \
-    && mkdir ${USER_HOME}/wso2-tmp \
-    && bash -c 'mkdir -p ${USER_HOME}/solr/{indexed-data,database}' \
-    && chown wso2carbon:wso2 -R ${USER_HOME}/solr \
-    && cp -r ${WSO2_SERVER_HOME}/repository/deployment/server/synapse-configs ${USER_HOME}/wso2-tmp \
-    && cp -r ${WSO2_SERVER_HOME}/repository/deployment/server/executionplans ${USER_HOME}/wso2-tmp \
     && rm -f ${WSO2_SERVER}.zip
 
-# remove unnecesary packages
-RUN apt-get purge -y netcat-traditional unzip wget
+# Add libraries for Kubernetes membership scheme based clustering.
+ADD --chown=wso2carbon:wso2 https://repo1.maven.org/maven2/dnsjava/dnsjava/${DNS_JAVA_VERSION}/dnsjava-${DNS_JAVA_VERSION}.jar ${WSO2_SERVER_HOME}/repository/components/lib
 
 COPY ./lib/postgresql-42.7.5.jar ${WSO2_SERVER_HOME}/repository/components/lib/postgresql-42.7.5.jar
 
 COPY ./conf/deployment.toml ${WSO2_SERVER_HOME}/repository/conf/deployment.toml 
 
-# set the user and work directory
+# Set the user and work directory.
 USER ${USER_ID}
 WORKDIR ${USER_HOME}
 
-# set environment variables
-ENV WORKING_DIRECTORY=${USER_HOME} \
+# Set environment variables.
+ENV JAVA_OPTS="-Djava.util.prefs.systemRoot=${USER_HOME}/.java -Djava.util.prefs.userRoot=${USER_HOME}/.java/.userPrefs" \
+    WORKING_DIRECTORY=${USER_HOME} \
     WSO2_SERVER_HOME=${WSO2_SERVER_HOME}
 
-# expose ports
-EXPOSE 9763 9443 9999 11111 8280 8243 5672 9711 9611 9099
+# Expose ports.
+EXPOSE 4010 9773 9453
 
-# initiate container and start WSO2 Carbon server
+# Initiate container and start WSO2 Carbon server.
 ENTRYPOINT ["/home/wso2carbon/docker-entrypoint.sh"]
